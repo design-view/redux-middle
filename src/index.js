@@ -3,11 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import rootReducer from './modules';
+import { legacy_createStore as createStore, applyMiddleware} from 'redux';
+import { Provider } from 'react-redux';
+import myLogger from './middlewares/myLogger';
+import { composeWithDevTools } from '@redux-devtools/extension';
+import ReduxThunk from 'redux-thunk';
+//리덕스데브툴즈적용 composeWithDevTools(미들웨어 적용)
+//미들웨어 적용 applyMiddelware(미들웨어1, 미들웨어2)
+const store = createStore(rootReducer, 
+  composeWithDevTools(applyMiddleware(ReduxThunk,myLogger)))
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Provider store={store}>
     <App />
+    </Provider>
   </React.StrictMode>
 );
 
